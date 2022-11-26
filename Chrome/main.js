@@ -82,16 +82,33 @@ function changeGridWidth() {
 	}
 }
 
-function waitForElement(selector, interval, callback) {
+function waitForElement(selector, interval, callback, timeout = 10 * 60 * 1000) {
 	let wait = setInterval(() => {
 		let element = document.querySelector(selector);
+
 		if (element != null) {
-			clearInterval(wait);
-			let index = intervalsArray.indexOf(wait); //get index of and remove the previously added interval from array when it's cleared
-			intervalsArray.splice(index, 1);
+			stopInterval(wait);
 			callback();
 		}
 	}, interval);
+
+	let stopInterval = (interval) => {
+		clearInterval(interval);
+		wait = undefined;
+		let index = intervalsArray.indexOf(interval); //get index of and remove the previously added interval from array when it's cleared
+		if (index !== -1) {
+			intervalsArray.splice(index, 1);
+		}
+	};
+
+	if (timeout) {
+		setTimeout(() => {
+			if (wait) {
+				stopInterval(wait);
+			}
+		}, timeout);
+	}
+
 	intervalsArray.push(wait); //add current interval to array
 }
 
@@ -424,7 +441,8 @@ function rearrangeInfo() {
 	let infoBar = document.querySelector('#info.ytd-video-primary-info-renderer');
 	let infoContents = document.querySelector('#info-contents > ytd-video-primary-info-renderer');
 	let miscButton = document.querySelector('#menu-container > #menu > ytd-menu-renderer > yt-icon-button:not([hidden])') 
-	|| document.querySelector('#info-contents > ytd-video-primary-info-renderer > yt-icon-button.ytd-menu-renderer:not([hidden])');
+	|| document.querySelector('#info-contents > ytd-video-primary-info-renderer > yt-icon-button.ytd-menu-renderer:not([hidden])')
+	|| document.querySelector('#menu-container > #menu > ytd-menu-renderer > #button-shape');
 	let dateElement = document.querySelector('#info-strings > yt-formatted-string');
 	let dateOuter = document.querySelector('#info-text > #date');
 	let descriptionElement = document.querySelector('#container > ytd-expander.ytd-video-secondary-info-renderer > #content');
@@ -558,8 +576,7 @@ function moveTopLevelItems() {
 	let infoDiv = document.querySelector('#info-contents div#info');
 	let miscButton = document.querySelector('#info-contents ytd-video-primary-info-renderer > yt-icon-button');
 	let existingMovedItem = document.querySelector('[redux-last-top-stream]')
-		|| document.querySelector('yt-icon-button[redux-last-top]') 
-        || document.querySelector('ytd-button-renderer[redux-last-top]');
+		|| document.querySelector('[redux-last-top]');
 
 	if (reduxSettings.altVideoLayout) {
 		document.querySelector('ytd-video-primary-info-renderer').style = 'padding-left: 15px !important; padding-top: 15px !important';
@@ -1079,6 +1096,23 @@ function addClearHomepageEvent(selector, clearPlaylists) {
 	}
 }
 
+function adjustAmbient() {
+	if (cinematicsObserver) return;
+	let cinematics = document.querySelector('#cinematics');
+	const initialProperty = document.querySelector('html').style.getPropertyValue('--redux-spec-general-background-a') || "#181818";
+
+	cinematicsObserver = new MutationObserver(() => {
+		cinematics = document.querySelector('#cinematics');
+
+		if (cinematics.hasChildNodes()) {
+			document.querySelector('html[dark]').style.setProperty('--redux-spec-general-background-a', 'transparent');
+		} else {
+			document.querySelector('html[dark]').style.setProperty('--redux-spec-general-background-a', initialProperty);
+		}
+	});
+	cinematicsObserver.observe(cinematics, { childList: true });
+}
+
 function main() {
 	if (reduxSettings.autoConfirm) {
 		if (confirmInterval == undefined) {
@@ -1173,8 +1207,11 @@ function main() {
 	if (reduxSettings.redirectShorts && pageLocation === PAGE_LOCATION.Shorts) {
 		redirectShorts();
 	}
-	if (pageLocation === PAGE_LOCATION.Home) {
+	if (reduxSettings.gridItems != defaultSettings.gridItems && pageLocation === PAGE_LOCATION.Home) {
 		waitForElement('#primary > ytd-rich-grid-renderer', 10, changeGridWidth);
+	}
+	if (!reduxSettings.ignoreAmbientAdjustment && getTheme() === THEME.Dark && pageLocation === PAGE_LOCATION.Video) {
+		waitForElement('#cinematics', 10, adjustAmbient);
 	}
 }
 
@@ -1193,10 +1230,12 @@ function main() {
 			addClearHomepageEvent(logoSelector);
 		});
 
-		const filtersSelector = '[page-subtype="home"] #chips yt-chip-cloud-chip-renderer';
-		waitForElement(filtersSelector, 10, () => {
-			addClearHomepageEvent(filtersSelector, true);
-		});
+		if (pageLocation === PAGE_LOCATION.Home) {
+			const filtersSelector = '[page-subtype="home"] #chips yt-chip-cloud-chip-renderer';
+			waitForElement(filtersSelector, 10, () => {
+				addClearHomepageEvent(filtersSelector, true);
+			}, 30000);
+		}
 	}
 
 	YTReduxURLPath = location.pathname;

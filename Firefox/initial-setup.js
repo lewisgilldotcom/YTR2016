@@ -83,7 +83,8 @@ const defaultSettings = {
 	"hideDownload": false,
 	"hideChaptersInDescription": true,
 	"hideMusicInDescription": false,
-	"hideHeatmap": false
+	"hideHeatmap": false,
+	"ignoreAmbientAdjustment": false
 };
 
 initiate();
@@ -157,7 +158,8 @@ function addCustomStyles() {
 		.header.ytd-playlist-panel-renderer {
 		background-color: #1a1a1a !important;
 		}
-		ytd-playlist-panel-renderer[collapsible] .title.ytd-playlist-panel-renderer {
+		ytd-playlist-panel-renderer[collapsible] .title.ytd-playlist-panel-renderer,
+		ytd-playlist-panel-renderer #next-video-title {
 		color: #fff !important;
 		}
 		.title.ytd-playlist-panel-renderer {
@@ -170,7 +172,8 @@ function addCustomStyles() {
 		--yt-endpoint-color: white !important;
 		color: white !important;
 		}
-		.publisher.ytd-playlist-panel-renderer {
+		.publisher.ytd-playlist-panel-renderer,
+		.byline-title.ytd-playlist-panel-renderer {
 		color: #B8B8B8 !important;
 		}
 		.playlist-items.ytd-playlist-panel-renderer {
@@ -296,7 +299,7 @@ function addCustomStyles() {
 		}
 		.more-button.ytd-video-secondary-info-renderer, 
 		.less-button.ytd-video-secondary-info-renderer {
-			font-size: 1.1rem;
+			font-size: 1.1rem !important;
 		}
 		ytd-comments#comments {
 			background-color: white;
@@ -431,38 +434,38 @@ function addCustomStyles() {
 			color: #167ac6;
 		}
 		.ytp-chrome-controls {
-			height: 40px;
-			line-height: 40px;
+			height: 40px !important;
+			line-height: 40px !important;
 		}
 		.ytp-chrome-bottom {
-			height: 40px;
+			height: 40px !important;
 		}
 		.ytp-progress-bar-container {
-			bottom: 39px;
+			bottom: 39px !important;
 		}
 		.ytp-time-display {
-			line-height: 39px;
+			line-height: 39px !important;
 		}
 		.ytp-big-mode .ytp-volume-slider {
-			min-height: 40px;
+			min-height: 40px !important;
 		}
 		.ytp-big-mode .ytp-volume-slider-handle:before {
-			height: 3px;
+			height: 3px !important;
 		}
 		.ytp-big-mode .ytp-volume-slider-handle:after {
-			height: 3px;
+			height: 3px !important;
 		}
 		.ytp-big-mode .ytp-volume-slider-active .ytp-volume-panel {
-			width: 72px;
+			width: 72px !important;
 		}
 		.ytp-big-mode .ytp-volume-slider-handle {
-			width: 12px;
-			height: 12px;
-			border-radius: 6px;
-			margin-top: -6px;
+			width: 12px !important;
+			height: 12px !important;
+			border-radius: 6px !important;
+			margin-top: -6px !important;
 		}
 		.ytp-volume-area svg {
-			transform: scale(1.25);
+			transform: scale(1.25) !important;
 		}
 		ytd-compact-video-renderer.ytd-video-description-music-section-renderer {
 			min-width: 200px;
@@ -504,7 +507,7 @@ function addCustomStyles() {
 		html[dark] tp-yt-app-drawer#guide[position="left"] {
 			border-right: 1px solid var(--redux-spec-10-percent-layer);
 		}
-		#masthead-container.ytd-app #masthead:not([dark]) {
+		html:not([dark]) #masthead-container.ytd-app #masthead:not([dark]) {
 			border-bottom: 1px solid #e8e8e8;
 		}
 		html[dark] #masthead-container.ytd-app {
@@ -612,7 +615,7 @@ function addCustomStyles() {
 			width: calc(var(--ytd-rich-grid-chips-bar-width) - 33px);
 		}
 		ytd-feed-filter-chip-bar-renderer {
-			margin-left: 16px;
+			justify-content: center;
 		}
 		ytd-expander.ytd-video-secondary-info-renderer {
 			margin-left: 0px !important;
@@ -716,17 +719,20 @@ function addCustomStyles() {
 		}
 		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button),
 		#subscribe-button > ytd-button-renderer:not(.style-primary) > a > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button),
-		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button) {
+		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button),
+		#subscribe-button > ytd-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button) {
 			background-color: #f00;
 		}
 		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button):hover,
 		#subscribe-button > ytd-button-renderer:not(.style-primary) > a > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button):hover,
-		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button):hover {
+		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button):hover,
+		#subscribe-button > ytd-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button):hover {
 			background-color: #d90a17;
 		}
 		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button)::before,
 		#subscribe-button > ytd-button-renderer:not(.style-primary) > a > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button)::before,
-		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button)::before {
+		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button)::before,
+		#subscribe-button > ytd-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button)::before {
 				content: url('${browser.runtime.getURL('/images/sub-icon.png')}');
 				background-size: auto;
 				width: 16px;
@@ -765,17 +771,24 @@ function addCustomStyles() {
 		#masthead #end ytd-button-renderer {
 			align-items: center;
 		}
-		#masthead #end ytd-button-renderer yt-icon {
+		#masthead #end .yt-spec-button-shape-next__icon {
 			display: none;
 		}
-		#masthead #end ytd-button-renderer yt-formatted-string {
+		#masthead #end ytd-button-renderer a {
+			border: none;
+		}
+		#masthead #end ytd-button-renderer a,
+		#masthead #end ytd-button-renderer span {
 			margin-left: 0;
 			text-transform: none;
 			color: var(--redux-paper-dialog-background-color);
 			background-color: var(--redux-spec-call-to-action);
 			font-size: 11px;
 		}
-		#masthead #end ytd-button-renderer tp-yt-paper-button {
+		#masthead #end ytd-button-renderer yt-button-shape {
+			padding: 0;
+		}
+		#masthead #end ytd-button-renderer a {
 			background-color: var(--redux-spec-call-to-action);
 			color: white;
 			padding: 5px 10px;
@@ -784,8 +797,8 @@ function addCustomStyles() {
 		/* Misc */
 		#search-form.ytd-searchbox,
 		#search-icon-legacy.ytd-searchbox {
-			height: 29px;
-			width: 66px;
+			height: 29px !important;
+			width: 66px !important;
 		}
 		#search-icon-legacy > yt-icon {
 			height: 20px !important;
@@ -806,13 +819,13 @@ function addCustomStyles() {
 			display: none !important;
 		}
 		#container.ytd-masthead {
-			height: 50px;
+			height: 50px !important;
 		}
 		#center.ytd-masthead { 
-			margin-right: auto;
+			margin-right: auto !important;
 		}
 		ytd-searchbox.ytd-masthead {
-			margin: 0 0 0 51px;
+			margin: 0 0 0 51px !important;
 		}
 		#playlist-actions #top-level-buttons-computed yt-icon-button:not(.style-default-active) path {
 			fill: #909090;
@@ -829,7 +842,7 @@ function addCustomStyles() {
             margin-top: 5px !important;
         }
         #info.ytd-video-primary-info-renderer > #menu-container {
-            transform: translateY(45px) !important;
+            transform: translateY(46px) !important;
 			flex-grow: 0;
         }
         #count.ytd-video-primary-info-renderer {
@@ -901,10 +914,14 @@ function addCustomStyles() {
 		#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button,
 		#subscribe-button > ytd-button-renderer > a > tp-yt-paper-button,
 		#subscribe-button > ytd-subscribe-button-renderer > yt-button-shape > button,
+		#subscribe-button > ytd-button-renderer > yt-button-shape > button,
+		#subscribe-button > ytd-button-renderer > yt-button-shape > a[href*="/edit"],
 		#sponsor-button > ytd-button-renderer > a > tp-yt-paper-button, 
-		#sponsor-button yt-button-shape > button, 
+		#sponsor-button yt-button-shape > button,
+		#sponsor-button > ytd-button-renderer > yt-button-shape > button,
 		#analytics-button > ytd-button-renderer > a > tp-yt-paper-button,
-		#analytics-button yt-button-shape > button {
+		#analytics-button yt-button-shape > button,
+		#analytics-button > ytd-button-renderer > yt-button-shape > a[href*="/analytics"] {
 			margin: 0; 
 			padding: 2px 8px 2px 8px; 
 			text-transform: none; 
@@ -912,6 +929,9 @@ function addCustomStyles() {
 			font-size: 12px;
 			max-height: 24px;
 			height: 24px;
+		}
+		html[dark] #subscribe-button > ytd-subscribe-button-renderer > yt-button-shape > button span {
+			color: var(--redux-dimmed-white);
 		}
 		#top-level-buttons-computed ytd-download-button-renderer yt-formatted-string {
 			font-weight: normal;
@@ -1003,7 +1023,7 @@ function addCustomStyles() {
 			background-color: #cc181e !important;
 		}
 		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > tp-yt-paper-button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button),
-		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not([subscribed]):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button),
+		#subscribe-button > ytd-subscribe-button-renderer:not(.style-primary) > yt-button-shape > button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button yt-button-shape > button),
 		#subscribe-button > ytd-button-renderer:not(.style-primary) > a > tp-yt-paper-button:not(.yt-spec-button-shape-next--tonal):not([page-subtype="subscriptions"] #subscribe-button tp-yt-paper-button) {
 			background-color: #cc181e !important;
 		}
@@ -1106,15 +1126,21 @@ function addCustomStyles() {
 		}
 		ytd-guide-signin-promo-renderer #sign-in-button {
 			background-color: var(--redux-spec-call-to-action);
+		}
+		ytd-guide-signin-promo-renderer #sign-in-button a {
 			color: var(--redux-spec-text-primary-inverse);
 		}
-		ytd-guide-signin-promo-renderer #sign-in-button #button {
+		ytd-guide-signin-promo-renderer #sign-in-button yt-button-shape {
+			padding: 0 !important;
+		}
+		ytd-guide-signin-promo-renderer #sign-in-button yt-button-shape > a {
 			padding: 5px 10px !important;
 		}
+		ytd-guide-signin-promo-renderer #sign-in-button div.yt-spec-button-shape-next__icon,
 		ytd-guide-signin-promo-renderer #sign-in-button yt-icon {
 			display: none !important;
 		}
-		ytd-guide-signin-promo-renderer #sign-in-button yt-formatted-string {
+		ytd-guide-signin-promo-renderer #sign-in-button a {
 			margin-left: 0 !important;
 			text-transform: none !important;
 			font-size: 11px !important;
@@ -1762,6 +1788,14 @@ function addCustomStyles() {
 		html:not([dark]) path[d="M11,17H9V8h2V17z M15,8h-2v9h2V8z M19,4v1h-1v16H6V5H5V4h4V3h6v1H19z M17,5H7v15h10V5z"] {
 			fill: #909090;
 		}
+		/* Collapse playlist */
+		html:not([dark]) path[d="M12.7,12l6.6,6.6l-0.7,0.7L12,12.7l-6.6,6.6l-0.7-0.7l6.6-6.6L4.6,5.4l0.7-0.7l6.6,6.6l6.6-6.6l0.7,0.7L12.7,12z"] {
+			fill: #909090;
+		}
+		/* Expand playlist */
+		html:not([dark]) path[d="M12,15.7L5.6,9.4l0.7-0.7l5.6,5.6l5.6-5.6l0.7,0.7L12,15.7z"] {
+			fill: #909090;
+		}
 		/* More vert playlist */
 		path[d="M12,16.5c0.83,0,1.5,0.67,1.5,1.5s-0.67,1.5-1.5,1.5s-1.5-0.67-1.5-1.5S11.17,16.5,12,16.5z M10.5,12 c0,0.83,0.67,1.5,1.5,1.5s1.5-0.67,1.5-1.5s-0.67-1.5-1.5-1.5S10.5,11.17,10.5,12z M10.5,6c0,0.83,0.67,1.5,1.5,1.5 s1.5-0.67,1.5-1.5S12.83,4.5,12,4.5S10.5,5.17,10.5,6z"] {
 			d: path("M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z") !important;
@@ -2031,44 +2065,47 @@ function addCustomStyles() {
 		#commentbox .underline {
 			display: none;
 		}
-		#commentbox #cancel-button tp-yt-paper-button,
-		#commentbox #submit-button tp-yt-paper-button {
+		#commentbox #cancel-button yt-button-shape > button,
+		#commentbox #submit-button yt-button-shape > button {
 			max-height: 30px;
 			padding: 10px 10px;
 			border-radius: 2px;
 			text-transform: capitalize;
 			font-size: 12px;
 		}
-		#commentbox #cancel-button tp-yt-paper-button {
+		#commentbox #cancel-button yt-button-shape {
 			background-color: #fafafa;
 			border: 1px solid #d3d3d3;
 		}
-		#commentbox #cancel-button tp-yt-paper-button:hover {
+		#commentbox #cancel-button yt-button-shape:hover {
 			background-color: #eaeaea;
 		}
-		html[dark] #commentbox #cancel-button tp-yt-paper-button {
+		html[dark] #commentbox #cancel-button yt-button-shape {
 			background-color: #909090;
 			border: 1px solid #909090;
 			color: white !important;
 		}
-		html[dark] #commentbox #cancel-button tp-yt-paper-button:hover {
+		html[dark] #commentbox #cancel-button yt-button-shape:hover {
 			background-color: #999999;
 			border: 1px solid #999999;
 		}
-		#commentbox #submit-button tp-yt-paper-button {
+		#commentbox #submit-button yt-button-shape {
 			background-color: #88bce2;
 			border: 1px solid #97beda;
+		}
+		#commentbox #submit-button yt-button-shape > button,
+		html[dark] #commentbox #submit-button yt-button-shape > button {
 			color: white !important;  
 		}
-		html[dark] #commentbox #submit-button tp-yt-paper-button {
+		html[dark] #commentbox #submit-button yt-button-shape {
 			background-color: #909090;
 			border: 1px solid #909090;
-			color: white !important;  
 		}
-		#commentbox #submit-button tp-yt-paper-button:hover {
+		#commentbox #submit-button yt-button-shape > button:hover {
 			background-color: #72a6cc;
+			cursor: pointer;
 		}
-		html[dark] #commentbox #submit-button tp-yt-paper-button:hover {
+		html[dark] #commentbox #submit-button yt-button-shape:hover {
 			background-color: #999999;
 		}
 		#count.ytd-comments-header-renderer yt-formatted-string {
@@ -2093,22 +2130,25 @@ function addCustomStyles() {
 		#dislike-button.ytd-comment-action-buttons-renderer {
 			order: 4;
 		}
-		#reply-button-end tp-yt-paper-button {
+		#reply-button-end yt-button-shape > button {
 			padding-left: 0;
 			justify-content: left;
 			padding-right: 4px !important;
 			min-width: fit-content !important;
 		}
-		html:not([dark]) #reply-button-end tp-yt-paper-button {
+		html:not([dark]) #reply-button-end yt-button-shape > button {
 			color: #909090;
 		}
-		#reply-button-end tp-yt-paper-button yt-formatted-string {
+		#reply-button-end yt-button-shape span {
 			text-transform: capitalize;
 			font-weight: normal;
 		}
-		#reply-button-end tp-yt-paper-button yt-formatted-string::after {
+		#reply-button-end yt-button-shape span::after {
 			content: '•';
 			margin: 0 5px;
+		}
+		#reply-button-end > ytd-button-renderer {
+			margin-left: 0px !important;
 		}
 		#comments #sort-menu #label.yt-dropdown-menu {
 			box-sizing: border-box;
